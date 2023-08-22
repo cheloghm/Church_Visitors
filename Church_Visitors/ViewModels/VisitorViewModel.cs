@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
 using Church_Visitors.Models;
 using Church_Visitors.Services;
-using IntelliJ.Lang.Annotations;
 using Microsoft.Maui.Controls;
 
 namespace Church_Visitors.ViewModels
@@ -12,38 +10,24 @@ namespace Church_Visitors.ViewModels
     {
         private readonly IVisitorService _visitorService;
 
-        public ObservableCollection<Visitor> Visitors { get; } = new ObservableCollection<Visitor>();
-
-        public Command LoadVisitorsCommand { get; }
-
         public VisitorViewModel(IVisitorService visitorService)
         {
             _visitorService = visitorService;
-            LoadVisitorsCommand = new Command(async () => await LoadVisitorsAsync());
-        }
 
-        private async Task LoadVisitorsAsync()
-        {
-            IsBusy = true;
-
-            try
+            GetAllVisitorsCommand = new Command(async () =>
             {
+                // Load all visitors
                 var visitors = await _visitorService.GetAllVisitorsAsync();
-                Visitors.Clear();
+                Visitors = new ObservableCollection<Visitor>(visitors);
+            });
 
-                foreach (var visitor in visitors)
-                {
-                    Visitors.Add(visitor);
-                }
-            }
-            catch (Exception ex)
-            {
-                // Handle the error
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+            // TODO: Add other commands here (e.g., GetToday'sVisitors, GetVisitorsByDate, etc.)
         }
+
+        public ObservableCollection<Visitor> Visitors { get; private set; }
+
+        public ICommand GetAllVisitorsCommand { get; }
+
+        // TODO: Define other commands (e.g., GetToday'sVisitors, GetVisitorsByDate, etc.)
     }
 }
