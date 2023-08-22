@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Church_Visitors.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Church_Visitors">
+
+    <Shell.Resources>
+        <Style TargetType="Shell">
+            <Setter Property="FlyoutVerticalScrollMode" Value="Auto" />
+            <Setter Property="FlyoutWidth" Value="260" />
+            <Setter Property="FlyoutBackgroundColor" Value="White" />
+        </Style>
+    </Shell.Resources>
+
+    <FlyoutItem Title="Home">
+        <ShellContent ContentTemplate="{DataTemplate local:MainPage}" Route="MainPage" />
+    </FlyoutItem>
+    <FlyoutItem Title="Visitors">
+        <ShellContent ContentTemplate="{DataTemplate local:Visitors}" Route="Visitors" />
+    </FlyoutItem>
+    <FlyoutItem Title="Announcements">
+        <ShellContent ContentTemplate="{DataTemplate local:Announcements}" Route="Announcements" />
+    </FlyoutItem>
+
+    <Shell.FlyoutFooter>
+        <StackLayout Padding="20">
+            <Button Text="LCA London" BackgroundColor="#1D8348" />
+        </StackLayout>
+    </Shell.FlyoutFooter>
+
+</Shell>
