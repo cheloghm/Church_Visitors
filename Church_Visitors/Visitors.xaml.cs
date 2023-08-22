@@ -7,4 +7,9 @@ public partial class Visitors : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    void OnSearchTextChanged(object sender, TextChangedEventArgs args)
+    {
+        // Your event handling code here
+    }
 }

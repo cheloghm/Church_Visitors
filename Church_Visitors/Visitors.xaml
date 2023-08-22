@@ -1,37 +1,35 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewmodels="clr-namespace:Church_Visitors.ViewModels"
+             xmlns:vm="clr-namespace:Church_Visitors.ViewModels;assembly=Church_Visitors"
              x:Class="Church_Visitors.Visitors"
              Title="Visitors">
 
     <ContentPage.BindingContext>
-        <viewmodels:VisitorViewModel />
+        <vm:VisitorsViewModel />
     </ContentPage.BindingContext>
 
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to Visitors Page"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        <SearchBar Placeholder="Search Visitors" TextChanged="OnSearchTextChanged" />
+        <HorizontalStackLayout>
+            <Button Text="Get All Visitors" Command="{Binding GetAllVisitorsCommand}" />
+            <Button Text="Get Today's Visitors" Command="{Binding GetTodaysVisitorsCommand}" />
+            <Button Text="Get Visitors by Date" Command="{Binding GetVisitorsByDateCommand}" />
+        </HorizontalStackLayout>
 
-        <Button Text="Get All Visitors" Command="{Binding GetAllVisitorsCommand}" />
-
-        <SearchBar Placeholder="Search for visitors" />
-
-        <ListView ItemsSource="{Binding Visitors}">
-            <ListView.ItemTemplate>
+        <CollectionView ItemsSource="{Binding Visitors}">
+            <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
-                        <HorizontalStackLayout>
-                            <Label Text="{Binding FullName}" />
-                            <Button Text="Update" />
-                            <Button Text="View" />
-                            <Button Text="Delete" />
-                        </HorizontalStackLayout>
-                    </ViewCell>
+                    <HorizontalStackLayout>
+                        <Label Text="{Binding FullName}" />
+                        <Button Text="View" Command="{Binding ViewCommand}" CommandParameter="{Binding Id}" />
+                        <Button Text="Update" Command="{Binding UpdateCommand}" CommandParameter="{Binding Id}" />
+                        <Button Text="Delete" Command="{Binding DeleteCommand}" CommandParameter="{Binding Id}" />
+                    </HorizontalStackLayout>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Text="Add Visitor" Command="{Binding AddVisitorCommand}" />
     </VerticalStackLayout>
 </ContentPage>
