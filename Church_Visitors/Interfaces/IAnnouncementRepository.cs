@@ -1,10 +1,13 @@
 ﻿using Church_Visitors.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Church_Visitors.Interfaces
 {
-    public interface IAnnouncementService
+    public interface IAnnouncementRepository
     {
         Task<IEnumerable<AnnouncementDTO>> GetAllAnnouncementsAsync();
         Task<IEnumerable<AnnouncementDTO>> GetAnnouncementsByDateCreatedAsync(DateTime dateCreated);
@@ -15,3 +18,4 @@ namespace Church_Visitors.Interfaces
         Task DeleteAnnouncementAsync(string id);
     }
 }
+

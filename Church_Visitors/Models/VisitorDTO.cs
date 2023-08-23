@@ -8,22 +8,12 @@ using System.Threading.Tasks;
 
 namespace Church_Visitors.Models
 {
-    public class Visitor
+    public class VisitorDTO
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-
-        [BsonElement("Fullname")]
         public string FullName { get; set; }
-
-        [BsonElement("GuestOf")]
         public string GuestOf { get; set; }
-
-        [BsonElement("OtherRemarks")]
         public string OtherRemarks { get; set; }
-
-        [BsonElement("DateEntered")]
         public DateTime DateEntered { get; set; }
     }
 }

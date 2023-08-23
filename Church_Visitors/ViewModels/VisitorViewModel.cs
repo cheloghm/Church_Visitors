@@ -10,7 +10,7 @@ namespace Church_Visitors.ViewModels
     public class VisitorsViewModel : BaseViewModel
     {
         private IVisitorService _visitorService;
-        public ObservableCollection<Visitor> Visitors { get; set; }
+        public ObservableCollection<VisitorDTO> Visitors { get; set; }
         public ICommand GetAllVisitorsCommand { get; set; }
         public ICommand GetTodaysVisitorsCommand { get; set; }
         public ICommand GetVisitorsByDateCommand { get; set; }
@@ -22,7 +22,7 @@ namespace Church_Visitors.ViewModels
         public VisitorsViewModel()
         {
             _visitorService = DependencyService.Get<IVisitorService>();
-            Visitors = new ObservableCollection<Visitor>();
+            Visitors = new ObservableCollection<VisitorDTO>();
 
             // Initialize commands
             GetAllVisitorsCommand = new Command(async () =>

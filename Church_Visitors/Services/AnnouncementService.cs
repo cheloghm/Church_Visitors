@@ -1,43 +1,38 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Church_Visitors.Interfaces;
+﻿using Church_Visitors.Interfaces;
 using Church_Visitors.Models;
-using Church_Visitors.Data;
-using MongoDB.Driver;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Church_Visitors.Services
 {
     public class AnnouncementService : IAnnouncementService
     {
-        private readonly IMongoCollection<Announcement> _announcements;
+        private readonly IAnnouncementRepository _announcementRepository;
 
-        public AnnouncementService(DataContext dataContext, string collectionName)
+        public AnnouncementService(IAnnouncementRepository announcementRepository)
         {
-            _announcements = dataContext.GetCollection<Announcement>(collectionName);
+            _announcementRepository = announcementRepository;
         }
 
-        public async Task<IEnumerable<Announcement>> GetAllAnnouncementsAsync() =>
-            await _announcements.Find(announcement => true).ToListAsync();
+        public async Task<IEnumerable<AnnouncementDTO>> GetAllAnnouncementsAsync() =>
+            await _announcementRepository.GetAllAnnouncementsAsync();
 
-        public async Task<IEnumerable<Announcement>> GetAnnouncementsByDateCreatedAsync(DateTime dateCreated) =>
-            await _announcements.Find(announcement => announcement.DateCreated.Date == dateCreated.Date).ToListAsync();
+        public async Task<IEnumerable<AnnouncementDTO>> GetAnnouncementsByDateCreatedAsync(DateTime dateCreated) =>
+            await _announcementRepository.GetAnnouncementsByDateCreatedAsync(dateCreated);
 
-        public async Task<IEnumerable<Announcement>> GetAnnouncementsByTodaysDateAsync()
-        {
-            var today = DateTime.Today;
-            return await _announcements.Find(announcement => announcement.DateCreated.Date == today).ToListAsync();
-        }
+        public async Task<IEnumerable<AnnouncementDTO>> GetAnnouncementsByTodaysDateAsync() =>
+            await _announcementRepository.GetAnnouncementsByTodaysDateAsync();
 
-        public async Task<Announcement> GetAnnouncementByIdAsync(string id) =>
-            await _announcements.Find(announcement => announcement.Id == id).FirstOrDefaultAsync();
+        public async Task<AnnouncementDTO> GetAnnouncementByIdAsync(string id) =>
+            await _announcementRepository.GetAnnouncementByIdAsync(id);
 
-        public async Task CreateAnnouncementAsync(Announcement announcement) =>
-            await _announcements.InsertOneAsync(announcement);
+        public async Task CreateAnnouncementAsync(AnnouncementDTO announcement) =>
+            await _announcementRepository.CreateAnnouncementAsync(announcement);
 
-        public async Task UpdateAnnouncementAsync(Announcement announcement) =>
-            await _announcements.ReplaceOneAsync(a => a.Id == announcement.Id, announcement);
+        public async Task UpdateAnnouncementAsync(AnnouncementDTO announcement) =>
+            await _announcementRepository.UpdateAnnouncementAsync(announcement);
 
         public async Task DeleteAnnouncementAsync(string id) =>
-            await _announcements.DeleteOneAsync(a => a.Id == id);
+            await _announcementRepository.DeleteAnnouncementAsync(id);
     }
 }

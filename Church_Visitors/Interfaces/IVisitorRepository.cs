@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Church_Visitors.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using Church_Visitors.Models;
 
-namespace Church_Visitors.Services
+namespace Church_Visitors.Interfaces
 {
-    public interface IVisitorService
+    public interface IVisitorRepository
     {
         Task<IEnumerable<VisitorDTO>> GetAllVisitorsAsync();
         Task<IEnumerable<VisitorDTO>> GetVisitorsByDateEnteredAsync(DateTime dateEntered);
@@ -16,4 +18,5 @@ namespace Church_Visitors.Services
         Task DeleteVisitorAsync(string id);
         Task<IEnumerable<VisitorDTO>> SearchVisitorsAsync(string searchText);
     }
+
 }

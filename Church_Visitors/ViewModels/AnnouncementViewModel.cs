@@ -9,12 +9,12 @@ namespace Church_Visitors.ViewModels
     {
         private readonly IAnnouncementService _announcementService;
 
-        public ObservableCollection<Announcement> Announcements { get; }
+        public ObservableCollection<AnnouncementDTO> Announcements { get; }
 
         public AnnouncementViewModel(IAnnouncementService announcementService)
         {
             _announcementService = announcementService;
-            Announcements = new ObservableCollection<Announcement>();
+            Announcements = new ObservableCollection<AnnouncementDTO>();
         }
 
         public async Task LoadAnnouncementsAsync()

@@ -3,51 +3,41 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Church_Visitors.Interfaces;
 using Church_Visitors.Models;
-using Church_Visitors.Data;
-using MongoDB.Driver;
+using Church_Visitors.Repositories;
 
 namespace Church_Visitors.Services
 {
     public class VisitorService : IVisitorService
     {
-        private readonly IMongoCollection<Visitor> _visitors;
+        private readonly IVisitorRepository _visitorRepository;
 
-        public VisitorService(DataContext dataContext, string collectionName)
+        public VisitorService(IVisitorRepository visitorRepository)
         {
-            _visitors = dataContext.GetCollection<Visitor>(collectionName);
+            _visitorRepository = visitorRepository;
         }
 
-        public async Task<IEnumerable<Visitor>> GetAllVisitorsAsync() =>
-            await _visitors.Find(visitor => true).ToListAsync();
+        public async Task<IEnumerable<VisitorDTO>> GetAllVisitorsAsync() =>
+            await _visitorRepository.GetAllVisitorsAsync();
 
-        public async Task<IEnumerable<Visitor>> GetVisitorsByDateEnteredAsync(DateTime dateEntered) =>
-            await _visitors.Find(visitor => visitor.DateEntered.Date == dateEntered.Date).ToListAsync();
+        public async Task<IEnumerable<VisitorDTO>> GetVisitorsByDateEnteredAsync(DateTime dateEntered) =>
+            await _visitorRepository.GetVisitorsByDateEnteredAsync(dateEntered);
 
-        public async Task<IEnumerable<Visitor>> GetVisitorsByTodaysDateAsync()
-        {
-            var today = DateTime.Today;
-            return await _visitors.Find(visitor => visitor.DateEntered.Date == today).ToListAsync();
-        }
+        public async Task<IEnumerable<VisitorDTO>> GetVisitorsByTodaysDateAsync() =>
+            await _visitorRepository.GetVisitorsByTodaysDateAsync();
 
-        public async Task<Visitor> GetVisitorByIdAsync(string id) =>
-            await _visitors.Find(visitor => visitor.Id == id).FirstOrDefaultAsync();
+        public async Task<VisitorDTO> GetVisitorByIdAsync(string id) =>
+            await _visitorRepository.GetVisitorByIdAsync(id);
 
-        public async Task CreateVisitorAsync(Visitor visitor) =>
-            await _visitors.InsertOneAsync(visitor);
+        public async Task CreateVisitorAsync(VisitorDTO visitor) =>
+            await _visitorRepository.CreateVisitorAsync(visitor);
 
-        public async Task UpdateVisitorAsync(Visitor visitor) =>
-            await _visitors.ReplaceOneAsync(v => v.Id == visitor.Id, visitor);
+        public async Task UpdateVisitorAsync(VisitorDTO visitor) =>
+            await _visitorRepository.UpdateVisitorAsync(visitor);
 
         public async Task DeleteVisitorAsync(string id) =>
-            await _visitors.DeleteOneAsync(v => v.Id == id);
+            await _visitorRepository.DeleteVisitorAsync(id);
 
-        public async Task<IEnumerable<Visitor>> SearchVisitorsAsync(string searchText)
-        {
-            var filter = Builders<Visitor>.Filter.Regex(v => v.FullName, searchText) |
-                         Builders<Visitor>.Filter.Regex(v => v.GuestOf, searchText) |
-                         Builders<Visitor>.Filter.Regex(v => v.OtherRemarks, searchText);
-
-            return await _visitors.Find(filter).ToListAsync();
-        }
+        public async Task<IEnumerable<VisitorDTO>> SearchVisitorsAsync(string searchText) =>
+            await _visitorRepository.SearchVisitorsAsync(searchText);
     }
 }
