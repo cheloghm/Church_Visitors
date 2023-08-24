@@ -5,7 +5,7 @@ namespace Church_Visitors
 {
     public partial class App : Application
     {
-        public static string BaseApiUrl = "https://yourapiurl.com";
+        public static string BaseApiUrl = "https://localhost:7170/api/";
         public IServiceProvider ServiceProvider { get; private set; }
 
         public App()
