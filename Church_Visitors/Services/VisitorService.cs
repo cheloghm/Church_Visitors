@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Church_Visitors.Interfaces;
-using Church_Visitors.Models;
 using Church_Visitors.DTO;
 using Church_Visitors.Repositories;
 

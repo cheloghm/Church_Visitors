@@ -3,10 +3,39 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Church_Visitors.Announcements"
              Title="Announcements">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to Announcement Page"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <!-- Left column (15% of the screen width) -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.15*" />
+            <ColumnDefinition Width="0.85*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Left column content -->
+        <VerticalStackLayout Padding="10" Spacing="20">
+            <Image Source="logo.png" WidthRequest="80" HeightRequest="80" Aspect="AspectFit" HorizontalOptions="Center" />
+            <Button Text="Get All Announcements" Command="{Binding GetAllAnnouncementsCommand}" />
+            <Button Text="Get Today's Announcements" Command="{Binding GetTodaysAnnouncementsCommand}" />
+            <Button Text="Get Announcements by Date" Command="{Binding GetAnnouncementsByDateCommand}" />
+            <Button Text="Add Announcement" Command="{Binding AddAnnouncementCommand}" />
+        </VerticalStackLayout>
+
+        <!-- Right column content -->
+        <VerticalStackLayout Grid.Column="1" Padding="10" Spacing="20">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Label Text="" HorizontalOptions="StartAndExpand" />
+                <!-- Spacer label -->
+                <SearchBar Placeholder="Search Announcements" TextChanged="OnSearchTextChanged" HorizontalOptions="End" WidthRequest="400"/>
+            </StackLayout>
+
+            <!-- Form controls in the center -->
+            <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                <Entry Placeholder="Message" Text="{Binding Message}" WidthRequest="600" HeightRequest="300" />
+                <!--<Entry Placeholder="Date" Text="{Binding DateVisited, StringFormat='{0:dd/MM/yyyy}'}" WidthRequest="600" />-->
+                <Button Text="Submit" Command="{Binding AddAnnouncementCommand}" />
+            </StackLayout>
+
+            <!-- Optional: Any additional UI elements for the right side can be placed here -->
+        </VerticalStackLayout>
+    </Grid>
+    
 </ContentPage>

@@ -1,5 +1,4 @@
-﻿using Church_Visitors.Models;
-using Church_Visitors.DTO;
+﻿using Church_Visitors.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;

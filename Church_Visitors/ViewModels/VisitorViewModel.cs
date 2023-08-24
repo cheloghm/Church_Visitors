@@ -84,7 +84,7 @@ namespace Church_Visitors.ViewModels
                     Id = " ",
                     FullName = FullName,
                     GuestOf = GuestOf,
-                    DateEntered = DateVisited,
+                    DateEntered = DateTime.Now,
                     OtherRemarks = OtherRemarks
                 };
 
@@ -93,7 +93,6 @@ namespace Church_Visitors.ViewModels
                 // Clear the form fields for a fresh entry
                 FullName = string.Empty;
                 GuestOf = string.Empty;
-                DateVisited = DateTime.Now;
                 OtherRemarks = string.Empty;
             });
 
