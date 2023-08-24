@@ -4,6 +4,7 @@ using Church_Visitors.Repositories;
 using Church_Visitors.Interfaces;
 using System.Net.Http;
 using Amazon.Runtime;
+using Church_Visitors.ViewModels;
 
 namespace Church_Visitors.Extensions
 {
@@ -11,8 +12,13 @@ namespace Church_Visitors.Extensions
     {
         public static IServiceCollection AddDataServices(this IServiceCollection services, string apiUrl)
         {
-            services.AddTransient<IVisitorService, VisitorService>();
             services.AddTransient<IAnnouncementService, AnnouncementService>();
+            services.AddSingleton<IAlertService, AlertService>();
+            services.AddTransient<IVisitorService, VisitorService>();
+            services.AddTransient<VisitorsViewModel>();
+
+            DependencyService.Register<IVisitorService, VisitorService>();
+            DependencyService.Register<IAlertService, AlertService>();
 
             // Register a named HttpClient with the base address
             services.AddHttpClient("DefaultHttpClient", client =>
