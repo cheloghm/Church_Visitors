@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Church_Visitors.Models;
+using Church_Visitors.DTO;
 using Church_Visitors.Interfaces;
 using System.Text;
 
@@ -45,7 +46,7 @@ namespace Church_Visitors.Repositories
         public async Task CreateVisitorAsync(VisitorDTO visitor)
         {
             var content = new StringContent(JsonConvert.SerializeObject(visitor), Encoding.UTF8, "application/json");
-            await _httpClient.PostAsync("/visitor", content);
+            await _httpClient.PostAsync("visitor", content);
         }
 
         public async Task UpdateVisitorAsync(VisitorDTO visitor)

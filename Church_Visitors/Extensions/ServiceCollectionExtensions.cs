@@ -17,9 +17,6 @@ namespace Church_Visitors.Extensions
             services.AddTransient<IVisitorService, VisitorService>();
             services.AddTransient<VisitorsViewModel>();
 
-            DependencyService.Register<IVisitorService, VisitorService>();
-            DependencyService.Register<IAlertService, AlertService>();
-
             // Register a named HttpClient with the base address
             services.AddHttpClient("DefaultHttpClient", client =>
             {

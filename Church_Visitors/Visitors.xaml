@@ -36,6 +36,7 @@
             <!-- Form controls in the center -->
             <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
                 <Entry Placeholder="Full Name" Text="{Binding FullName}" WidthRequest="600" />
+                <Entry Placeholder="Guest Of?" Text="{Binding GuestOf}" WidthRequest="600" />
                 <Entry Placeholder="Date Visited" Text="{Binding DateVisited, StringFormat='{0:dd/MM/yyyy}'}" WidthRequest="600" />
                 <Entry Placeholder="Other remarks" Text="{Binding OtherRemarks}" WidthRequest="600" HeightRequest="300" />
                 <Button Text="Submit" Command="{Binding AddVisitorCommand}" />

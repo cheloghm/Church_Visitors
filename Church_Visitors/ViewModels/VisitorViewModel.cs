@@ -2,9 +2,10 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Church_Visitors.Interfaces;
-using Church_Visitors.Models;
+using Church_Visitors.DTO;
 using Church_Visitors.Services;
 using Microsoft.Maui.Controls;
+using System.Collections.Generic;
 
 namespace Church_Visitors.ViewModels
 {
@@ -12,9 +13,9 @@ namespace Church_Visitors.ViewModels
     {
         private readonly IVisitorService _visitorService;
         private readonly IAlertService _alertService;
-        // Properties for the form
         public string FullName { get; set; }
-        public DateTime DateVisited { get; set; } = DateTime.Now; // default to today's date
+        public string GuestOf { get; set; }
+        public DateTime DateVisited { get; set; } = DateTime.Now;
         public string OtherRemarks { get; set; }
         public ObservableCollection<VisitorDTO> Visitors { get; set; }
         public ICommand GetAllVisitorsCommand { get; set; }
@@ -25,6 +26,10 @@ namespace Church_Visitors.ViewModels
         public ICommand DeleteCommand { get; set; }
         public ICommand AddVisitorCommand { get; set; }
 
+        public VisitorsViewModel()
+            : this(((App)Application.Current).ServiceProvider.GetService<IVisitorService>(),
+                   ((App)Application.Current).ServiceProvider.GetService<IAlertService>())
+        { }
         public VisitorsViewModel(IVisitorService visitorService, IAlertService alertService)
         {
             _visitorService = visitorService ?? throw new ArgumentNullException(nameof(visitorService));
@@ -36,28 +41,19 @@ namespace Church_Visitors.ViewModels
             GetAllVisitorsCommand = new Command(async () =>
             {
                 var allVisitors = await _visitorService.GetAllVisitorsAsync();
-                foreach (var visitor in allVisitors)
-                {
-                    Visitors.Add(visitor);
-                }
+                ClearAndPopulateVisitors(allVisitors);
             });
 
             GetTodaysVisitorsCommand = new Command(async () =>
             {
                 var todaysVisitors = await _visitorService.GetVisitorsByTodaysDateAsync();
-                foreach (var visitor in todaysVisitors)
-                {
-                    Visitors.Add(visitor);
-                }
+                ClearAndPopulateVisitors(todaysVisitors);
             });
 
             GetVisitorsByDateCommand = new Command<DateTime>(async (date) =>
             {
                 var visitorsByDate = await _visitorService.GetVisitorsByDateEnteredAsync(date);
-                foreach (var visitor in visitorsByDate)
-                {
-                    Visitors.Add(visitor);
-                }
+                ClearAndPopulateVisitors(visitorsByDate);
             });
 
             ViewCommand = new Command<string>(async (id) =>
@@ -85,7 +81,9 @@ namespace Church_Visitors.ViewModels
 
                 var newVisitor = new VisitorDTO
                 {
+                    Id = " ",
                     FullName = FullName,
+                    GuestOf = GuestOf,
                     DateEntered = DateVisited,
                     OtherRemarks = OtherRemarks
                 };
@@ -94,10 +92,20 @@ namespace Church_Visitors.ViewModels
 
                 // Clear the form fields for a fresh entry
                 FullName = string.Empty;
+                GuestOf = string.Empty;
                 DateVisited = DateTime.Now;
                 OtherRemarks = string.Empty;
             });
 
+        }
+
+        private void ClearAndPopulateVisitors(IEnumerable<VisitorDTO> visitors)
+        {
+            Visitors.Clear();
+            foreach (var visitor in visitors)
+            {
+                Visitors.Add(visitor);
+            }
         }
     }
 }

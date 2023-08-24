@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Church_Visitors.Models
+namespace Church_Visitors.DTO
 {
     public class VisitorDTO
     {

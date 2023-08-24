@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Church_Visitors.Models;
+using Church_Visitors.DTO;
 using Church_Visitors.Interfaces;
 using System.Text;
 

@@ -2,7 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 
-namespace Church_Visitors.Models
+namespace Church_Visitors.DTO
 {
     public class AnnouncementDTO
     {
