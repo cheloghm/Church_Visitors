@@ -26,6 +26,25 @@ namespace Church_Visitors.ViewModels
         public ICommand DeleteCommand { get; set; }
         public ICommand AddVisitorCommand { get; set; }
 
+        private bool _isFormVisible = false;
+        public bool IsFormVisible
+        {
+            get => _isFormVisible;
+            set => SetProperty(ref _isFormVisible, value);
+        }
+
+        private ObservableCollection<VisitorDTO> _fetchedVisitors;
+        public ObservableCollection<VisitorDTO> FetchedVisitors
+        {
+            get => _fetchedVisitors;
+            set => SetProperty(ref _fetchedVisitors, value);
+        }
+
+        public ICommand ViewVisitorCommand { get; set; }
+        public ICommand UpdateVisitorCommand { get; set; }
+        public ICommand DeleteVisitorCommand { get; set; }
+        public ICommand ToggleViewCommand { get; set; }
+
         public VisitorsViewModel()
             : this(((App)Application.Current).ServiceProvider.GetService<IVisitorService>(),
                    ((App)Application.Current).ServiceProvider.GetService<IAlertService>())
@@ -36,6 +55,16 @@ namespace Church_Visitors.ViewModels
             _alertService = alertService ?? throw new ArgumentNullException(nameof(alertService));
 
             Visitors = new ObservableCollection<VisitorDTO>();
+            FetchedVisitors = new ObservableCollection<VisitorDTO>();
+
+            ToggleViewCommand = new Command(async () =>
+            {
+                IsFormVisible = !IsFormVisible; // Toggle between form and list
+                if (!IsFormVisible)
+                {
+                    await LoadAllVisitors(); // Fetch and display visitors when showing the list
+                }
+            });
 
             // Initialize commands
             GetAllVisitorsCommand = new Command(async () =>
@@ -56,19 +85,20 @@ namespace Church_Visitors.ViewModels
                 ClearAndPopulateVisitors(visitorsByDate);
             });
 
-            ViewCommand = new Command<string>(async (id) =>
+            // Inside VisitorsViewModel constructor
+            ViewVisitorCommand = new Command<VisitorDTO>(async (visitor) =>
             {
-                // Retrieve and display the visitor details
+                // Use the visitor parameter to show the details or navigate to a details page
             });
 
-            UpdateCommand = new Command<string>(async (id) =>
+            UpdateVisitorCommand = new Command<VisitorDTO>(async (visitor) =>
             {
-                // Update the visitor details
+                // Use the visitor parameter to initiate an update process
             });
 
-            DeleteCommand = new Command<string>(async (id) =>
+            DeleteVisitorCommand = new Command<VisitorDTO>(async (visitor) =>
             {
-                // Confirm and delete the visitor
+                // Use the visitor parameter to initiate a delete process
             });
 
             AddVisitorCommand = new Command(async () =>
@@ -96,6 +126,16 @@ namespace Church_Visitors.ViewModels
                 OtherRemarks = string.Empty;
             });
 
+        }
+
+        private async Task LoadAllVisitors()
+        {
+            var allVisitors = await _visitorService.GetAllVisitorsAsync();
+            FetchedVisitors.Clear();
+            foreach (var visitor in allVisitors)
+            {
+                FetchedVisitors.Add(visitor);
+            }
         }
 
         private void ClearAndPopulateVisitors(IEnumerable<VisitorDTO> visitors)

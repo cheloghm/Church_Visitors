@@ -12,13 +12,13 @@
             <ColumnDefinition Width="0.85*" />
         </Grid.ColumnDefinitions>
 
-        <!-- Left column content -->
+        <!-- Inside the Left column content -->
         <VerticalStackLayout Padding="10" Spacing="20">
             <Image Source="logo.png" WidthRequest="80" HeightRequest="80" Aspect="AspectFit" HorizontalOptions="Center" />
-            <Button Text="Get All Visitors" Command="{Binding GetAllVisitorsCommand}" />
+            <Button Text="Get All Visitors" Command="{Binding ToggleViewCommand}" />
             <Button Text="Get Today's Visitors" Command="{Binding GetTodaysVisitorsCommand}" />
             <Button Text="Get Visitors by Date" Command="{Binding GetVisitorsByDateCommand}" />
-            <Button Text="Add Visitor" Command="{Binding AddVisitorCommand}" />
+            <Button Text="Add Visitor" Command="{Binding ToggleViewCommand}" />
         </VerticalStackLayout>
 
         <!-- Right column content -->
@@ -30,13 +30,38 @@
             </StackLayout>
 
             <!-- Form controls in the center -->
-            <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+            <StackLayout IsVisible="{Binding IsFormVisible}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
                 <Entry Placeholder="Full Name" Text="{Binding FullName}" WidthRequest="600" />
                 <Entry Placeholder="Guest Of?" Text="{Binding GuestOf}" WidthRequest="600" />
                 <!--<Entry Placeholder="Date Visited" Text="{Binding DateVisited, StringFormat='{0:dd/MM/yyyy}'}" WidthRequest="600" />-->
                 <Entry Placeholder="Other remarks" Text="{Binding OtherRemarks}" WidthRequest="600" HeightRequest="300" />
                 <Button Text="Submit" Command="{Binding AddVisitorCommand}" />
             </StackLayout>
+
+            <CollectionView IsVisible="{Binding !IsFormVisible}" ItemsSource="{Binding FetchedVisitors}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="5" HorizontalOptions="FillAndExpand">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Visitor details -->
+                            <Label Text="{Binding FullName}" Grid.Column="0" />
+                            <Label Text="{Binding GuestOf}" Grid.Column="1" />
+                            <!-- ... other details ... -->
+
+                            <!-- Action buttons -->
+                            <Button Text="View" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:VisitorsViewModel}}, Path=BindingContext.ViewVisitorCommand}" CommandParameter="{Binding .}" Grid.Column="2" />
+                            <Button Text="Update" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:VisitorsViewModel}}, Path=BindingContext.UpdateVisitorCommand}" CommandParameter="{Binding .}" Grid.Column="3" />
+                            <Button Text="Delete" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:VisitorsViewModel}}, Path=BindingContext.DeleteVisitorCommand}" CommandParameter="{Binding .}" Grid.Column="4" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
             <!-- Optional: Any additional UI elements for the right side can be placed here -->
         </VerticalStackLayout>

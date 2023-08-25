@@ -19,7 +19,7 @@ namespace Church_Visitors.Repositories
 
         public async Task<IEnumerable<VisitorDTO>> GetAllVisitorsAsync()
         {
-            var response = await _httpClient.GetStringAsync("/visitors");
+            var response = await _httpClient.GetStringAsync("visitor");
             return JsonConvert.DeserializeObject<IEnumerable<VisitorDTO>>(response);
         }
 
