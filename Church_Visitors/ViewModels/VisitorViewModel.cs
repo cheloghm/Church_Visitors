@@ -43,7 +43,8 @@ namespace Church_Visitors.ViewModels
         public ICommand ViewVisitorCommand { get; set; }
         public ICommand UpdateVisitorCommand { get; set; }
         public ICommand DeleteVisitorCommand { get; set; }
-        public ICommand ToggleViewCommand { get; set; }
+        public ICommand ShowAddVisitorFormCommand { get; set; }
+        public ICommand ShowAllVisitorsListCommand { get; set; }
 
         public VisitorsViewModel()
             : this(((App)Application.Current).ServiceProvider.GetService<IVisitorService>(),
@@ -57,13 +58,18 @@ namespace Church_Visitors.ViewModels
             Visitors = new ObservableCollection<VisitorDTO>();
             FetchedVisitors = new ObservableCollection<VisitorDTO>();
 
-            ToggleViewCommand = new Command(async () =>
+            // Initialize ShowAddVisitorFormCommand
+            ShowAddVisitorFormCommand = new Command(() =>
             {
-                IsFormVisible = !IsFormVisible; // Toggle between form and list
-                if (!IsFormVisible)
-                {
-                    await LoadAllVisitors(); // Fetch and display visitors when showing the list
-                }
+                IsFormVisible = true;
+                FetchedVisitors.Clear(); // Clear the fetched visitors when showing the form
+            });
+
+            // Initialize ShowAllVisitorsListCommand
+            ShowAllVisitorsListCommand = new Command(async () =>
+            {
+                IsFormVisible = false;
+                await LoadAllVisitors(); // Fetch and display visitors when showing the list
             });
 
             // Initialize commands

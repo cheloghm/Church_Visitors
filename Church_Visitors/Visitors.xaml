@@ -15,10 +15,10 @@
         <!-- Inside the Left column content -->
         <VerticalStackLayout Padding="10" Spacing="20">
             <Image Source="logo.png" WidthRequest="80" HeightRequest="80" Aspect="AspectFit" HorizontalOptions="Center" />
-            <Button Text="Get All Visitors" Command="{Binding ToggleViewCommand}" />
+            <Button Text="Get All Visitors" Command="{Binding ShowAllVisitorsListCommand}" />
             <Button Text="Get Today's Visitors" Command="{Binding GetTodaysVisitorsCommand}" />
             <Button Text="Get Visitors by Date" Command="{Binding GetVisitorsByDateCommand}" />
-            <Button Text="Add Visitor" Command="{Binding ToggleViewCommand}" />
+            <Button Text="Add Visitor" Command="{Binding ShowAddVisitorFormCommand}" />
         </VerticalStackLayout>
 
         <!-- Right column content -->
