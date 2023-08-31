@@ -17,7 +17,7 @@
             <Image Source="logo.png" WidthRequest="80" HeightRequest="80" Aspect="AspectFit" HorizontalOptions="Center" />
             <Button Text="Get All Visitors" Command="{Binding ShowAllVisitorsListCommand}" />
             <Button Text="Get Today's Visitors" Command="{Binding GetTodaysVisitorsCommand}" />
-            <Button Text="Get Visitors by Date" Command="{Binding GetVisitorsByDateCommand}" />
+            <Button Text="Get Visitors by Date" Command="{Binding PickDateAndFetchVisitorsCommand}" />
             <Button Text="Add Visitor" Command="{Binding ShowAddVisitorFormCommand}" />
         </VerticalStackLayout>
 
@@ -38,11 +38,16 @@
                 <Button Text="Submit" Command="{Binding AddVisitorCommand}" />
             </StackLayout>
 
+            <!-- Add this section -->
+            <DatePicker Date="{Binding SelectedDate}" IsVisible="{Binding IsDatePickerVisible}" 
+            DateSelected="DatePicker_DateSelected" />
+
             <CollectionView IsVisible="{Binding !IsFormVisible}" ItemsSource="{Binding FetchedVisitors}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid Padding="5" HorizontalOptions="FillAndExpand">
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
@@ -55,9 +60,14 @@
                             <!-- ... other details ... -->
 
                             <!-- Action buttons -->
-                            <Button Text="View" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:VisitorsViewModel}}, Path=BindingContext.ViewVisitorCommand}" CommandParameter="{Binding .}" Grid.Column="2" />
+                            <!--<Button Text="View" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:VisitorsViewModel}}, Path=BindingContext.ViewVisitorCommand}" CommandParameter="{Binding .}" Grid.Column="2" />
                             <Button Text="Update" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:VisitorsViewModel}}, Path=BindingContext.UpdateVisitorCommand}" CommandParameter="{Binding .}" Grid.Column="3" />
-                            <Button Text="Delete" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:VisitorsViewModel}}, Path=BindingContext.DeleteVisitorCommand}" CommandParameter="{Binding .}" Grid.Column="4" />
+                            <Button Text="Delete" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:VisitorsViewModel}}, Path=BindingContext.DeleteVisitorCommand}" CommandParameter="{Binding .}" Grid.Column="4" />-->
+
+                            <Button Text="View" Clicked="ViewVisitorClicked" CommandParameter="{Binding .}" Grid.Column="2" />
+                            <Button Text="Update" Clicked="UpdateVisitorClicked" CommandParameter="{Binding .}" Grid.Column="3" />
+                            <Button Text="Delete" Clicked="DeleteVisitorClicked" CommandParameter="{Binding .}" Grid.Column="4" />
+
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

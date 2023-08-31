@@ -25,20 +25,21 @@ namespace Church_Visitors.Repositories
 
         public async Task<IEnumerable<VisitorDTO>> GetVisitorsByDateEnteredAsync(DateTime dateEntered)
         {
-            var response = await _httpClient.GetStringAsync($"/visitors/date/{dateEntered.ToString("yyyy-MM-dd")}");
+            var response = await _httpClient.GetStringAsync($"Visitor/by-date?date={dateEntered.ToString("yyyy-MM-dd")}");
             return JsonConvert.DeserializeObject<IEnumerable<VisitorDTO>>(response);
         }
 
         public async Task<IEnumerable<VisitorDTO>> GetVisitorsByTodaysDateAsync()
         {
-            var today = DateTime.Today;
-            var response = await _httpClient.GetStringAsync($"/visitors/date/{today.ToString("yyyy-MM-dd")}");
+            var today = DateTime.Today.Date;
+            var queryParam = today.ToString("yyyy-MM-dd");
+            var response = await _httpClient.GetStringAsync($"Visitor/by-date?date={queryParam}");
             return JsonConvert.DeserializeObject<IEnumerable<VisitorDTO>>(response);
         }
 
         public async Task<VisitorDTO> GetVisitorByIdAsync(string id)
         {
-            var response = await _httpClient.GetStringAsync($"/visitors/{id}");
+            var response = await _httpClient.GetStringAsync($"Visitor/{id}");
             return JsonConvert.DeserializeObject<VisitorDTO>(response);
         }
 
@@ -51,12 +52,12 @@ namespace Church_Visitors.Repositories
         public async Task UpdateVisitorAsync(VisitorDTO visitor)
         {
             var content = new StringContent(JsonConvert.SerializeObject(visitor), Encoding.UTF8, "application/json");
-            await _httpClient.PutAsync($"/visitors/{visitor.Id}", content);
+            await _httpClient.PutAsync($"visitors/{visitor.Id}", content);
         }
 
         public async Task DeleteVisitorAsync(string id)
         {
-            await _httpClient.DeleteAsync($"/visitors/{id}");
+            await _httpClient.DeleteAsync($"Visitor/{id}");
         }
 
         public async Task<IEnumerable<VisitorDTO>> SearchVisitorsAsync(string searchText)

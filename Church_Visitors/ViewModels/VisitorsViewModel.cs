@@ -12,7 +12,7 @@ namespace Church_Visitors.ViewModels
     public class VisitorsViewModel : BaseViewModel
     {
         private readonly IVisitorService _visitorService;
-        private readonly IAlertService _alertService;
+        private IAlertService _alertService;
         public string FullName { get; set; }
         public string GuestOf { get; set; }
         public DateTime DateVisited { get; set; } = DateTime.Now;
@@ -21,16 +21,35 @@ namespace Church_Visitors.ViewModels
         public ICommand GetAllVisitorsCommand { get; set; }
         public ICommand GetTodaysVisitorsCommand { get; set; }
         public ICommand GetVisitorsByDateCommand { get; set; }
-        public ICommand ViewCommand { get; set; }
-        public ICommand UpdateCommand { get; set; }
-        public ICommand DeleteCommand { get; set; }
         public ICommand AddVisitorCommand { get; set; }
+        public ICommand PickDateAndFetchVisitorsCommand { get; set; }
+        public ICommand ViewVisitorCommand { get; set; }
+        public ICommand UpdateVisitorCommand { get; set; }
+        public ICommand DeleteVisitorCommand { get; set; }
+        public ICommand ShowAddVisitorFormCommand { get; set; }
+        public ICommand ShowAllVisitorsListCommand { get; set; }
+        public ICommand DateSelectedCommand { get; set; }
 
         private bool _isFormVisible = false;
+        private DateTime _selectedDate = DateTime.Now;
+        private bool _isDatePickerVisible;
+
         public bool IsFormVisible
         {
             get => _isFormVisible;
             set => SetProperty(ref _isFormVisible, value);
+        }
+
+        public DateTime SelectedDate
+        {
+            get => _selectedDate;
+            set => SetProperty(ref _selectedDate, value);
+        }
+
+        public bool IsDatePickerVisible
+        {
+            get => _isDatePickerVisible;
+            set => SetProperty(ref _isDatePickerVisible, value);
         }
 
         private ObservableCollection<VisitorDTO> _fetchedVisitors;
@@ -40,11 +59,11 @@ namespace Church_Visitors.ViewModels
             set => SetProperty(ref _fetchedVisitors, value);
         }
 
-        public ICommand ViewVisitorCommand { get; set; }
-        public ICommand UpdateVisitorCommand { get; set; }
-        public ICommand DeleteVisitorCommand { get; set; }
-        public ICommand ShowAddVisitorFormCommand { get; set; }
-        public ICommand ShowAllVisitorsListCommand { get; set; }
+        public IAlertService AlertService
+        {
+            get => _alertService;
+            set => _alertService = value;
+        }
 
         public VisitorsViewModel()
             : this(((App)Application.Current).ServiceProvider.GetService<IVisitorService>(),
@@ -83,6 +102,7 @@ namespace Church_Visitors.ViewModels
             {
                 var todaysVisitors = await _visitorService.GetVisitorsByTodaysDateAsync();
                 ClearAndPopulateVisitors(todaysVisitors);
+                IsFormVisible = false; 
             });
 
             GetVisitorsByDateCommand = new Command<DateTime>(async (date) =>
@@ -94,17 +114,26 @@ namespace Church_Visitors.ViewModels
             // Inside VisitorsViewModel constructor
             ViewVisitorCommand = new Command<VisitorDTO>(async (visitor) =>
             {
-                // Use the visitor parameter to show the details or navigate to a details page
+                // Show visitor details in a modal dialog
+                await _alertService.ShowVisitorDetailsAsync(visitor);
             });
 
+            // Initialize UpdateVisitorCommand
             UpdateVisitorCommand = new Command<VisitorDTO>(async (visitor) =>
             {
-                // Use the visitor parameter to initiate an update process
+                // Show update modal dialog pre-populated with visitor details
+                await _alertService.ShowUpdateVisitorAsync(visitor, this);
             });
 
+            // Initialize DeleteVisitorCommand
             DeleteVisitorCommand = new Command<VisitorDTO>(async (visitor) =>
             {
-                // Use the visitor parameter to initiate a delete process
+                bool shouldDelete = await _alertService.ShowConfirmationAlertAsync("Delete Visitor", "Are you sure you want to delete this visitor?");
+                if (shouldDelete)
+                {
+                    // Delete visitor
+                    // ...
+                }
             });
 
             AddVisitorCommand = new Command(async () =>
@@ -132,6 +161,17 @@ namespace Church_Visitors.ViewModels
                 OtherRemarks = string.Empty;
             });
 
+            DateSelectedCommand = new Command<DateTime>((selectedDate) =>
+            {
+                FetchVisitorsBySelectedDate(selectedDate);
+            });
+
+            // Inside your constructor or initialization code
+            PickDateAndFetchVisitorsCommand = new Command(() =>
+            {
+                IsDatePickerVisible = !IsDatePickerVisible;
+            });
+
         }
 
         private async Task LoadAllVisitors()
@@ -147,10 +187,42 @@ namespace Church_Visitors.ViewModels
         private void ClearAndPopulateVisitors(IEnumerable<VisitorDTO> visitors)
         {
             Visitors.Clear();
+            FetchedVisitors.Clear();
+
             foreach (var visitor in visitors)
             {
                 Visitors.Add(visitor);
+                FetchedVisitors.Add(visitor);
             }
         }
+
+        public void UpdateVisitor(VisitorDTO updatedVisitor)
+        {
+            // Find the visitor in the collection and update its properties
+            var visitorToUpdate = Visitors.FirstOrDefault(v => v.Id == updatedVisitor.Id);
+            if (visitorToUpdate != null)
+            {
+                visitorToUpdate.FullName = updatedVisitor.FullName;
+                visitorToUpdate.GuestOf = updatedVisitor.GuestOf;
+                visitorToUpdate.OtherRemarks = updatedVisitor.OtherRemarks;
+
+                // Notify UI that the properties have changed
+                OnPropertyChanged(nameof(Visitors));
+            }
+        }
+
+        public async Task DeleteVisitorAsync(VisitorDTO visitorToDelete)
+        {
+            await _visitorService.DeleteVisitorAsync(visitorToDelete.Id);
+            // Refresh the visitor list after delete
+            await LoadAllVisitors();
+        }
+
+        public async void FetchVisitorsBySelectedDate(DateTime selectedDate)
+        {
+            var visitorsByDate = await _visitorService.GetVisitorsByDateEnteredAsync(selectedDate);
+            ClearAndPopulateVisitors(visitorsByDate);
+        }
+
     }
 }
