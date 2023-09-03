@@ -62,7 +62,8 @@ namespace Church_Visitors.Repositories
 
         public async Task<IEnumerable<VisitorDTO>> SearchVisitorsAsync(string searchText)
         {
-            var response = await _httpClient.GetStringAsync($"/visitors/search/{searchText}");
+            var encodedSearchText = Uri.EscapeDataString(searchText);
+            var response = await _httpClient.GetStringAsync($"Visitor/search?query={encodedSearchText}");
             return JsonConvert.DeserializeObject<IEnumerable<VisitorDTO>>(response);
         }
     }

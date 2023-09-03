@@ -29,6 +29,7 @@ namespace Church_Visitors.ViewModels
         public ICommand ShowAddVisitorFormCommand { get; set; }
         public ICommand ShowAllVisitorsListCommand { get; set; }
         public ICommand DateSelectedCommand { get; set; }
+        public ICommand SearchVisitorsCommand { get; set; }
 
         private bool _isFormVisible = false;
         private DateTime _selectedDate = DateTime.Now;
@@ -134,6 +135,12 @@ namespace Church_Visitors.ViewModels
                     // Delete visitor
                     // ...
                 }
+            });
+
+            SearchVisitorsCommand = new Command<string>(async (query) =>
+            {
+                var searchedVisitors = await _visitorService.SearchVisitorsAsync(query);
+                ClearAndPopulateVisitors(searchedVisitors);
             });
 
             AddVisitorCommand = new Command(async () =>
