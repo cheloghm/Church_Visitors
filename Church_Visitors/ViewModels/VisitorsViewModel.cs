@@ -156,7 +156,7 @@ namespace Church_Visitors.ViewModels
                     Id = " ",
                     FullName = FullName,
                     GuestOf = GuestOf,
-                    DateEntered = DateTime.Now,
+                    DateCreated = DateTime.Now.ToString(),
                     OtherRemarks = OtherRemarks
                 };
 

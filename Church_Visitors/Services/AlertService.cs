@@ -18,7 +18,7 @@ namespace Church_Visitors.Services
             // Create a formatted string to display visitor details
             string details = $"Full Name: {visitor.FullName}\n" +
                              $"Guest Of: {visitor.GuestOf}\n" +
-                             $"Date Visited: {visitor.DateEntered}\n" +
+                             $"Date Visited: {visitor.DateCreated}\n" +
                              $"Other Remarks: {visitor.OtherRemarks}";
 
             await Application.Current.MainPage.DisplayAlert("Visitor Details", details, "OK");

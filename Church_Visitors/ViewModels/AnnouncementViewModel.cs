@@ -155,7 +155,7 @@ namespace Church_Visitors.ViewModels
                     Id = " ",
                     Title = Title,
                     Message = Message,
-                    DateCreated = DateTime.Now
+                    DateCreated = DateTime.Now.ToString()
                 };
 
                 await _announcementService.CreateAnnouncementAsync(newAnnouncement);

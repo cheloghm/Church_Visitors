@@ -46,7 +46,7 @@ namespace Church_Visitors.Repositories
         public async Task CreateVisitorAsync(VisitorDTO visitor)
         {
             var content = new StringContent(JsonConvert.SerializeObject(visitor), Encoding.UTF8, "application/json");
-            await _httpClient.PostAsync("visitor", content);
+            await _httpClient.PostAsync("Visitor", content);
         }
 
         public async Task UpdateVisitorAsync(VisitorDTO visitor)

@@ -3,7 +3,7 @@ using Church_Visitors.DTO;
 using Church_Visitors.Interfaces;
 using Church_Visitors.ViewModels;
 
-namespace Church_Announcements;
+namespace Church_Visitors;
 
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class Announcements : ContentPage
