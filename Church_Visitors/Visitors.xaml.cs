@@ -20,10 +20,24 @@ public partial class Visitors : ContentPage
         BindingContext = viewModel;
     }
 
+    private string _searchQuery;
+
+    public string SearchQuery
+    {
+        get => _searchQuery;
+        set
+        {
+            _searchQuery = value;
+            ((VisitorsViewModel)BindingContext).SearchVisitorsCommand.Execute(_searchQuery);
+        }
+    }
+
+    // TextChanged event handler
     void OnSearchTextChanged(object sender, TextChangedEventArgs args)
     {
-        // Your event handling code here
+        SearchQuery = args.NewTextValue;
     }
+
 
     private async void ViewVisitorClicked(object sender, EventArgs e)
     {

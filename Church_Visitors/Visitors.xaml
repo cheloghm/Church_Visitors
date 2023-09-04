@@ -26,7 +26,7 @@
             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                 <Label Text="" HorizontalOptions="StartAndExpand" />
                 <!-- Spacer label -->
-                <SearchBar Placeholder="Search Visitors" TextChanged="OnSearchTextChanged" HorizontalOptions="End" WidthRequest="400"/>
+                <SearchBar Placeholder="Search Visitors" TextChanged="OnSearchTextChanged" HorizontalOptions="End" WidthRequest="400" Text="{Binding SearchQuery}" />
             </StackLayout>
 
             <!-- Form controls in the center -->
@@ -39,36 +39,29 @@
             </StackLayout>
 
             <!-- Add this section -->
-            <DatePicker Date="{Binding SelectedDate}" IsVisible="{Binding IsDatePickerVisible}" 
-            DateSelected="DatePicker_DateSelected" />
+            <DatePicker Date="{Binding SelectedDate}" IsVisible="{Binding IsDatePickerVisible}" DateSelected="DatePicker_DateSelected" />
 
-            <CollectionView IsVisible="{Binding !IsFormVisible}" ItemsSource="{Binding FetchedVisitors}">
+            <!-- Center the CollectionView and provide proper spacing between items -->
+            <CollectionView IsVisible="{Binding !IsFormVisible}" ItemsSource="{Binding FetchedVisitors}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Padding="5" HorizontalOptions="FillAndExpand">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
+                        <StackLayout Padding="10" BackgroundColor="#F0F0F0" Orientation="Horizontal" Spacing="10">
                             <!-- Visitor details -->
-                            <Label Text="{Binding FullName}" Grid.Column="0" />
-                            <Label Text="{Binding GuestOf}" Grid.Column="1" />
+                            <Label Text="{Binding FullName}" />
+                            <Label Text="   " />
+                            <Label Text="{Binding GuestOf}" />
                             <!-- ... other details ... -->
 
                             <!-- Action buttons -->
-                            <!--<Button Text="View" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:VisitorsViewModel}}, Path=BindingContext.ViewVisitorCommand}" CommandParameter="{Binding .}" Grid.Column="2" />
-                            <Button Text="Update" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:VisitorsViewModel}}, Path=BindingContext.UpdateVisitorCommand}" CommandParameter="{Binding .}" Grid.Column="3" />
-                            <Button Text="Delete" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:VisitorsViewModel}}, Path=BindingContext.DeleteVisitorCommand}" CommandParameter="{Binding .}" Grid.Column="4" />-->
-
-                            <Button Text="View" Clicked="ViewVisitorClicked" CommandParameter="{Binding .}" Grid.Column="2" />
-                            <Button Text="Update" Clicked="UpdateVisitorClicked" CommandParameter="{Binding .}" Grid.Column="3" />
-                            <Button Text="Delete" Clicked="DeleteVisitorClicked" CommandParameter="{Binding .}" Grid.Column="4" />
-
-                        </Grid>
+                            <StackLayout Orientation="Horizontal" Spacing="10">
+                                <Button Text="View" Clicked="ViewVisitorClicked" CommandParameter="{Binding .}" />
+                                <Button Text="Update" Clicked="UpdateVisitorClicked" CommandParameter="{Binding .}" />
+                                <Button Text="Delete" Clicked="DeleteVisitorClicked" CommandParameter="{Binding .}" />
+                            </StackLayout>
+                        </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
