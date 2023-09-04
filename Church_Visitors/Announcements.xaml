@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Church_Visitors.Announcements"
+             x:Class="Church_Announcements.Announcements"
              Title="Announcements">
     <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
         <!-- Left column (15% of the screen width) -->
@@ -10,13 +10,13 @@
             <ColumnDefinition Width="0.85*" />
         </Grid.ColumnDefinitions>
 
-        <!-- Left column content -->
+        <!-- Inside the Left column content -->
         <VerticalStackLayout Padding="10" Spacing="20">
             <Image Source="logo.png" WidthRequest="80" HeightRequest="80" Aspect="AspectFit" HorizontalOptions="Center" />
-            <Button Text="Get All Announcements" Command="{Binding GetAllAnnouncementsCommand}" />
+            <Button Text="Get All Announcements" Command="{Binding ShowAllAnnouncementsListCommand}" />
             <Button Text="Get Today's Announcements" Command="{Binding GetTodaysAnnouncementsCommand}" />
-            <Button Text="Get Announcements by Date" Command="{Binding GetAnnouncementsByDateCommand}" />
-            <Button Text="Add Announcement" Command="{Binding AddAnnouncementCommand}" />
+            <Button Text="Get Announcements by Date" Command="{Binding PickDateAndFetchAnnouncementsCommand}" />
+            <Button Text="Add Announcement" Command="{Binding ShowAddAnnouncementFormCommand}" />
         </VerticalStackLayout>
 
         <!-- Right column content -->
@@ -24,18 +24,46 @@
             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                 <Label Text="" HorizontalOptions="StartAndExpand" />
                 <!-- Spacer label -->
-                <SearchBar Placeholder="Search Announcements" TextChanged="OnSearchTextChanged" HorizontalOptions="End" WidthRequest="400"/>
+                <SearchBar Placeholder="Search Announcements" TextChanged="OnSearchTextChanged" HorizontalOptions="End" WidthRequest="400" Text="{Binding SearchQuery}" />
             </StackLayout>
 
             <!-- Form controls in the center -->
-            <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-                <Entry Placeholder="Message" Text="{Binding Message}" WidthRequest="600" HeightRequest="300" />
-                <!--<Entry Placeholder="Date" Text="{Binding DateVisited, StringFormat='{0:dd/MM/yyyy}'}" WidthRequest="600" />-->
+            <StackLayout IsVisible="{Binding IsFormVisible}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                <Entry Placeholder="Full Name" Text="{Binding Title}" WidthRequest="600" />
+                <Entry Placeholder="Guest Of?" Text="{Binding Message}" WidthRequest="600" />
                 <Button Text="Submit" Command="{Binding AddAnnouncementCommand}" />
             </StackLayout>
+
+            <!-- Add this section -->
+            <DatePicker Date="{Binding SelectedDate}" IsVisible="{Binding IsDatePickerVisible}" DateSelected="DatePicker_DateSelected" />
+
+            <!-- Center the CollectionView and provide proper spacing between items -->
+            <CollectionView IsVisible="{Binding !IsFormVisible}" ItemsSource="{Binding FetchedAnnouncements}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="10" BackgroundColor="#F0F0F0" Orientation="Horizontal" Spacing="10">
+                            <!-- Announcement details -->
+                            <Label Text="{Binding Title}" />
+                            <Label Text="   " />
+                            <Label Text="{Binding Message}" />
+                            <!-- ... other details ... -->
+
+                            <!-- Action buttons -->
+                            <StackLayout Orientation="Horizontal" Spacing="10">
+                                <Button Text="View" Clicked="ViewAnnouncementClicked" CommandParameter="{Binding .}" />
+                                <Button Text="Update" Clicked="UpdateAnnouncementClicked" CommandParameter="{Binding .}" />
+                                <Button Text="Delete" Clicked="DeleteAnnouncementClicked" CommandParameter="{Binding .}" />
+                            </StackLayout>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
             <!-- Optional: Any additional UI elements for the right side can be placed here -->
         </VerticalStackLayout>
     </Grid>
-    
+
 </ContentPage>

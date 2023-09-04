@@ -34,5 +34,8 @@ namespace Church_Visitors.Services
 
         public async Task DeleteAnnouncementAsync(string id) =>
             await _announcementRepository.DeleteAnnouncementAsync(id);
+
+        public async Task<IEnumerable<VisitorDTO>> SearchAnnouncementsAsync(string searchText) =>
+            await _announcementRepository.SearchAnnouncementsAsync(searchText);
     }
 }

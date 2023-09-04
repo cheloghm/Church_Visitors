@@ -13,5 +13,6 @@ namespace Church_Visitors.Interfaces
         Task CreateAnnouncementAsync(AnnouncementDTO announcement);
         Task UpdateAnnouncementAsync(AnnouncementDTO announcement);
         Task DeleteAnnouncementAsync(string id);
+        Task<IEnumerable<VisitorDTO>> SearchAnnouncementsAsync(string searchText);
     }
 }

@@ -12,7 +12,9 @@ namespace Church_Visitors.Interfaces
     {
         Task ShowAlert(string title, string message);
         Task ShowVisitorDetailsAsync(VisitorDTO visitor);
+        Task ShowAnnouncementDetailsAsync(AnnouncementDTO announcement);
         Task ShowUpdateVisitorAsync(VisitorDTO visitor, VisitorsViewModel viewModel);
+        Task ShowUpdateAnnouncementAsync(AnnouncementDTO announcement, AnnouncementsViewModel viewModel);
         Task<bool> ShowConfirmationAlertAsync(string title, string message);
     }
 }
