@@ -81,6 +81,7 @@ namespace Church_Visitors.ViewModels
             ShowAddAnnouncementFormCommand = new Command(() =>
             {
                 IsFormVisible = true;
+                IsDatePickerVisible = false;
                 FetchedAnnouncements.Clear(); // Clear the fetched announcements when showing the form
             });
 
@@ -88,6 +89,7 @@ namespace Church_Visitors.ViewModels
             ShowAllAnnouncementsListCommand = new Command(async () =>
             {
                 IsFormVisible = false;
+                IsDatePickerVisible = false;
                 await LoadAllAnnouncements(); // Fetch and display announcements when showing the list
             });
 
@@ -103,10 +105,13 @@ namespace Church_Visitors.ViewModels
                 var todaysAnnouncements = await _announcementService.GetAnnouncementsByTodaysDateAsync();
                 ClearAndPopulateAnnouncements(todaysAnnouncements);
                 IsFormVisible = false;
+                IsDatePickerVisible = false;
             });
 
             GetAnnouncementsByDateCommand = new Command<DateTime>(async (date) =>
             {
+                IsDatePickerVisible = true;
+                IsFormVisible = false;
                 var announcementsByDate = await _announcementService.GetAnnouncementsByDateCreatedAsync(date);
                 ClearAndPopulateAnnouncements(announcementsByDate);
             });

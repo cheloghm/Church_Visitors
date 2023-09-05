@@ -82,6 +82,7 @@ namespace Church_Visitors.ViewModels
             ShowAddVisitorFormCommand = new Command(() =>
             {
                 IsFormVisible = true;
+                IsDatePickerVisible = false;
                 FetchedVisitors.Clear(); // Clear the fetched visitors when showing the form
             });
 
@@ -89,6 +90,7 @@ namespace Church_Visitors.ViewModels
             ShowAllVisitorsListCommand = new Command(async () =>
             {
                 IsFormVisible = false;
+                IsDatePickerVisible = false;
                 await LoadAllVisitors(); // Fetch and display visitors when showing the list
             });
 
@@ -103,11 +105,14 @@ namespace Church_Visitors.ViewModels
             {
                 var todaysVisitors = await _visitorService.GetVisitorsByTodaysDateAsync();
                 ClearAndPopulateVisitors(todaysVisitors);
-                IsFormVisible = false; 
+                IsFormVisible = false;
+                IsDatePickerVisible = false;
             });
 
             GetVisitorsByDateCommand = new Command<DateTime>(async (date) =>
             {
+                IsDatePickerVisible = true;
+                IsFormVisible = false;
                 var visitorsByDate = await _visitorService.GetVisitorsByDateEnteredAsync(date);
                 ClearAndPopulateVisitors(visitorsByDate);
             });
