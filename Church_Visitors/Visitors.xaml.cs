@@ -73,4 +73,16 @@ public partial class Visitors : ContentPage
             viewModel.FetchVisitorsBySelectedDate(selectedDate);
         }
     }
+
+    private void ClearVisitorClicked(object sender, EventArgs e)
+    {
+        // Access the Entry elements by their names
+        FullNameEntry.Text = string.Empty;
+        GuestOfEntry.Text = string.Empty;
+        OtherRemarksEntry.Text = string.Empty;
+
+        // Optionally, you can hide the form if needed
+        //viewModel.IsFormVisible = false;
+    }
+
 }

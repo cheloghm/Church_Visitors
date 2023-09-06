@@ -15,10 +15,10 @@
         <!-- Inside the Left column content -->
         <VerticalStackLayout Padding="10" Spacing="20">
             <Image Source="logo.png" WidthRequest="80" HeightRequest="80" Aspect="AspectFit" HorizontalOptions="Center" />
-            <Button Text="Get All Visitors" Command="{Binding ShowAllVisitorsListCommand}" />
-            <Button Text="Get Today's Visitors" Command="{Binding GetTodaysVisitorsCommand}" />
-            <Button Text="Get Visitors by Date" Command="{Binding PickDateAndFetchVisitorsCommand}" />
-            <Button Text="Add Visitor" Command="{Binding ShowAddVisitorFormCommand}" />
+            <Button Text="Get All" Command="{Binding ShowAllVisitorsListCommand}" />
+            <Button Text="Get Today's" Command="{Binding GetTodaysVisitorsCommand}" />
+            <Button Text="Get by Date" Command="{Binding PickDateAndFetchVisitorsCommand}" />
+            <Button Text="Add" Command="{Binding ShowAddVisitorFormCommand}" />
         </VerticalStackLayout>
 
         <!-- Right column content -->
@@ -31,11 +31,16 @@
 
             <!-- Form controls in the center -->
             <StackLayout IsVisible="{Binding IsFormVisible}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-                <Entry Placeholder="Full Name" Text="{Binding FullName}" WidthRequest="600" />
-                <Entry Placeholder="Guest Of?" Text="{Binding GuestOf}" WidthRequest="600" />
-                <!--<Entry Placeholder="Date Visited" Text="{Binding DateVisited, StringFormat='{0:dd/MM/yyyy}'}" WidthRequest="600" />-->
-                <Entry Placeholder="Other remarks" Text="{Binding OtherRemarks}" WidthRequest="600" HeightRequest="300" />
-                <Button Text="Submit" Command="{Binding AddVisitorCommand}" />
+
+                <Entry x:Name="FullNameEntry" Placeholder="Full Name" Text="{Binding FullName}" WidthRequest="600" />
+                <Entry x:Name="GuestOfEntry" Placeholder="Guest Of?" Text="{Binding GuestOf}" WidthRequest="600" />
+                <Entry x:Name="OtherRemarksEntry" Placeholder="Other remarks" Text="{Binding OtherRemarks}" WidthRequest="600" HeightRequest="300" />
+
+                <!-- Button stack layout to contain Submit and Clear buttons side by side -->
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                    <Button Text="Submit" Command="{Binding AddVisitorCommand}" WidthRequest="300" />
+                    <Button Text="Clear" Clicked="ClearVisitorClicked" WidthRequest="300" />
+                </StackLayout>
             </StackLayout>
 
             <!-- Add this section -->

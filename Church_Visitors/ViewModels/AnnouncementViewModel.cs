@@ -165,6 +165,9 @@ namespace Church_Visitors.ViewModels
 
                 await _announcementService.CreateAnnouncementAsync(newAnnouncement);
 
+                // Show a success alert
+                _alertService.ShowAlert("Success", "Announcement added successfully.");
+
                 // Clear the form fields for a fresh entry
                 Title = string.Empty;
                 Message = string.Empty;

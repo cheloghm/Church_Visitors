@@ -73,4 +73,14 @@ public partial class Announcements : ContentPage
             viewModel.FetchAnnouncementsBySelectedDate(selectedDate);
         }
     }
+
+    private void ClearAnnouncementClicked(object sender, EventArgs e)
+    {
+        // Access the Entry elements by their names
+        TitleEntry.Text = string.Empty;
+        MessageEntry.Text = string.Empty;
+
+        // Optionally, you can hide the form if needed
+        //viewModel.IsFormVisible = false;
+    }
 }

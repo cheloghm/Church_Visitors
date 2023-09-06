@@ -167,6 +167,9 @@ namespace Church_Visitors.ViewModels
 
                 await _visitorService.CreateVisitorAsync(newVisitor);
 
+                // Show a success alert
+                _alertService.ShowAlert("Success", "Visitor added successfully.");
+
                 // Clear the form fields for a fresh entry
                 FullName = string.Empty;
                 GuestOf = string.Empty;
