@@ -13,11 +13,7 @@ public partial class Visitors : ContentPage
         InitializeComponent();
         BindingContext = ((App)Application.Current).ServiceProvider.GetService<VisitorsViewModel>();
         // Inject IAlertService into VisitorsViewModel here (if not done already)
-        var viewModel = new VisitorsViewModel(
-    ((App)Application.Current).ServiceProvider.GetService<IVisitorService>(),
-    ((App)Application.Current).ServiceProvider.GetService<IAlertService>()
-);
-        BindingContext = viewModel;
+
     }
 
     private string _searchQuery;
