@@ -12,12 +12,6 @@ public partial class Announcements : ContentPage
     {
         InitializeComponent();
         BindingContext = ((App)Application.Current).ServiceProvider.GetService<AnnouncementsViewModel>();
-        // Inject IAlertService into AnnouncementsViewModel here (if not done already)
-        var viewModel = new AnnouncementsViewModel(
-    ((App)Application.Current).ServiceProvider.GetService<IAnnouncementService>(),
-    ((App)Application.Current).ServiceProvider.GetService<IAlertService>()
-);
-        BindingContext = viewModel;
     }
 
     private string _searchQuery;
@@ -78,7 +72,7 @@ public partial class Announcements : ContentPage
     {
         // Access the Entry elements by their names
         TitleEntry.Text = string.Empty;
-        MessageEntry.Text = string.Empty;
+        MessageEditor.Text = string.Empty;
 
         // Optionally, you can hide the form if needed
         //viewModel.IsFormVisible = false;

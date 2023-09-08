@@ -34,7 +34,8 @@
 
                 <Entry x:Name="FullNameEntry" Placeholder="Full Name" Text="{Binding FullName}" WidthRequest="600" />
                 <Entry x:Name="GuestOfEntry" Placeholder="Guest Of?" Text="{Binding GuestOf}" WidthRequest="600" />
-                <Entry x:Name="OtherRemarksEntry" Placeholder="Other remarks" Text="{Binding OtherRemarks}" WidthRequest="600" HeightRequest="300" />
+                <Editor x:Name="OtherRemarksEditor" Placeholder="Other remarks" Text="{Binding OtherRemarks}" WidthRequest="600" HeightRequest="300" />
+
 
                 <!-- Button stack layout to contain Submit and Clear buttons side by side -->
                 <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">

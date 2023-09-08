@@ -12,8 +12,6 @@ public partial class Visitors : ContentPage
     {
         InitializeComponent();
         BindingContext = ((App)Application.Current).ServiceProvider.GetService<VisitorsViewModel>();
-        // Inject IAlertService into VisitorsViewModel here (if not done already)
-
     }
 
     private string _searchQuery;
@@ -75,7 +73,7 @@ public partial class Visitors : ContentPage
         // Access the Entry elements by their names
         FullNameEntry.Text = string.Empty;
         GuestOfEntry.Text = string.Empty;
-        OtherRemarksEntry.Text = string.Empty;
+        OtherRemarksEditor.Text = string.Empty;
 
         // Optionally, you can hide the form if needed
         //viewModel.IsFormVisible = false;

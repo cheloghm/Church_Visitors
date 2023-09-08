@@ -30,7 +30,7 @@
             <!-- Form controls in the center -->
             <StackLayout IsVisible="{Binding IsFormVisible}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
                 <Entry x:Name="TitleEntry" Placeholder="Title" Text="{Binding Title}" WidthRequest="600" />
-                <Entry x:Name="MessageEntry" Placeholder="Message" Text="{Binding Message}" WidthRequest="600" HeightRequest="300" />
+                <Editor x:Name="MessageEditor" Placeholder="Message" Text="{Binding Message}" WidthRequest="600" HeightRequest="300" />
 
                 <!-- Button stack layout to contain Submit and Clear buttons side by side -->
                 <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
